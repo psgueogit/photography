@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petar Gueorguiev</title>
+<meta name="description" content="Photography — Strasbourg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500;600&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#1a1a1a;
+  --bg2:#202020;
+  --t1:#f0f0ee;
+  --t2:#727270;
+  --t3:#3a3a38;
+  --sans:'Syne',system-ui,sans-serif;
+  --mono:'DM Mono','Courier New',monospace;
+}
+
+html{
+  background:var(--bg);
+  color:var(--t1);
+  font-family:var(--sans);
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* grain */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  opacity:.032;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+
+/* ── CURSOR ── */
+#cur{
+  position:fixed;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--t1);
+  pointer-events:none;
+  z-index:10000;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,opacity .25s;
+  mix-blend-mode:difference;
+}
+
+#cur.big{width:56px;height:56px;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:1000;
+  padding:1.75rem clamp(1.5rem,4vw,3rem);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  mix-blend-mode:difference;
+}
+
+.nav-name{
+  font-size:.82rem;
+  font-weight:400;
+  letter-spacing:.06em;
+  color:var(--t1);
+  text-transform:uppercase;
+}
+
+.nav-links{
+  display:flex;
+  gap:2.25rem;
+}
+
+.nav-links a{
+  font-family:var(--mono);
+  font-size:.6rem;
+  font-weight:300;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--t1);
+  text-decoration:none;
+  opacity:.4;
+  transition:opacity .2s;
+}
+
+.nav-links a:hover{opacity:1;}
+.nav-links a.on{opacity:1;}
+
+/* ── HERO ── */
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:0 clamp(1.5rem,4vw,3rem) clamp(2.5rem,5vh,4rem);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background:var(--bg2);
+  /* swap for: background-image:url(images/hero.jpg); background-size:cover; background-position:center; */
+}
+
+.hero-bg::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(26,26,26,.85) 0%, rgba(26,26,26,.1) 60%, transparent 100%);
+}
+
+.hero-ph{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.hero-ph span{
+  font-family:var(--mono);
+  font-size:.55rem;
+  color:var(--t3);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.hero-text{
+  position:relative;
+  z-index:2;
+}
+
+.hero-title{
+  font-size:clamp(2.8rem,7vw,6rem);
+  font-weight:300;
+  line-height:.95;
+  letter-spacing:-.02em;
+  overflow:hidden;
+}
+
+.hero-title .line{
+  display:block;
+  transform:translateY(110%);
+  opacity:0;
+  transition:transform .9s cubic-bezier(.16,1,.3,1), opacity .6s ease;
+}
+
+.hero-title .line.i2{transition-delay:.12s;}
+.hero-title .line.i3{font-style:italic;transition-delay:.22s;}
+
+.hero-title .line.up{transform:translateY(0);opacity:1;}
+
+.hero-sub{
+  margin-top:1.5rem;
+  display:flex;
+  gap:2.5rem;
+  align-items:baseline;
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity .7s ease .55s, transform .7s ease .55s;
+}
+
+.hero-sub.up{opacity:1;transform:translateY(0);}
+
+.hero-sub p{
+  font-family:var(--mono);
+  font-size:.62rem;
+  font-weight:300;
+  color:var(--t2);
+  letter-spacing:.1em;
+}
+
+.hero-scroll{
+  position:absolute;
+  bottom:clamp(2rem,5vh,3.5rem);
+  right:clamp(1.5rem,4vw,3rem);
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  opacity:0;
+  transition:opacity .7s ease 1s;
+}
+
+.hero-scroll.up{opacity:1;}
+
+.hero-scroll span{
+  font-family:var(--mono);
+  font-size:.55rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--t3);
+  writing-mode:vertical-rl;
+}
+
+.scroll-line{
+  width:1px;
+  height:48px;
+  background:var(--t3);
+  transform-origin:top;
+  animation:scrollpulse 2s ease-in-out infinite 1.2s;
+}
+
+@keyframes scrollpulse{
+  0%,100%{transform:scaleY(1);opacity:.4;}
+  50%{transform:scaleY(.4);opacity:1;}
+}
+
+/* ── SECTIONS ── */
+section.series{
+  padding:clamp(5rem,12vh,9rem) clamp(1.5rem,4vw,3rem);
+}
+
+/* Series label row */
+.slabel{
+  display:flex;
+  align-items:baseline;
+  gap:.75rem;
+  margin-bottom:clamp(2.5rem,6vh,4.5rem);
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+
+.slabel.vis{opacity:1;transform:translateY(0);}
+
+.slabel-num{
+  font-family:var(--mono);
+  font-size:.58rem;
+  font-weight:300;
+  color:var(--t3);
+  letter-spacing:.1em;
+}
+
+.slabel-name{
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--t2);
+}
+
+.slabel-yr{
+  font-family:var(--mono);
+  font-size:.56rem;
+  font-weight:300;
+  color:var(--t3);
+  letter-spacing:.08em;
+  margin-left:auto;
+}
+
+/* ── PHOTO ENTRIES ── */
+.entry{
+  display:grid;
+  gap:clamp(1rem,2.5vw,2rem);
+  margin-bottom:clamp(5rem,12vh,9rem);
+}
+
+/* entry layouts */
+.entry.lrg{
+  grid-template-columns:1fr;
+}
+
+.entry.lrg .photo{
+  max-width:75%;
+}
+
+.entry.lrg-r .photo{
+  max-width:72%;
+  margin-left:auto;
+}
+
+.entry.side{
+  grid-template-columns:1fr 1fr;
+  align-items:start;
+}
+
+.entry.side-offset{
+  grid-template-columns:5fr 4fr;
+  align-items:end;
+}
+
+.entry.side-offset .photo:first-child{
+  margin-top:0;
+}
+
+.entry.side-offset .photo:last-child{
+  margin-bottom:4rem;
+}
+
+/* Photo cell */
+.photo{
+  position:relative;
+  overflow:hidden;
+  background:var(--bg2);
+  opacity:0;
+  transform:translateY(48px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+
+.photo.vis{opacity:1;transform:translateY(0);}
+.photo:nth-child(2){transition-delay:.1s;}
+.photo:nth-child(3){transition-delay:.2s;}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 8s ease;
+}
+
+.photo:hover img{transform:scale(1.03);}
+
+/* Aspect ratios */
+.r-3-2 {aspect-ratio:3/2;}
+.r-4-5 {aspect-ratio:4/5;}
+.r-16-9{aspect-ratio:16/9;}
+.r-5-7 {aspect-ratio:5/7;}
+.r-2-3 {aspect-ratio:2/3;}
+.r-3-4 {aspect-ratio:3/4;}
+.r-1-1 {aspect-ratio:1/1;}
+.r-7-4 {aspect-ratio:7/4;}
+
+/* placeholder */
+.ph{
+  width:100%;height:100%;
+  min-height:180px;
+  display:flex;
+  align-items:flex-end;
+  padding:.8rem 1rem;
+}
+
+.ph span{
+  font-family:var(--mono);
+  font-size:.52rem;
+  color:var(--t3);
+  letter-spacing:.14em;
+}
+
+/* Caption */
+.caption{
+  margin-top:.9rem;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .6s ease .2s, transform .6s ease .2s;
+}
+
+.caption.vis{opacity:1;transform:translateY(0);}
+
+.cap-title{
+  font-size:.82rem;
+  font-weight:400;
+  color:var(--t1);
+  letter-spacing:-.01em;
+  margin-bottom:.2em;
+}
+
+.cap-note{
+  font-size:.75rem;
+  font-weight:300;
+  color:var(--t3);
+  line-height:1.65;
+}
+
+.cap-meta{
+  font-family:var(--mono);
+  font-size:.53rem;
+  font-weight:300;
+  color:var(--t3);
+  letter-spacing:.07em;
+  margin-top:.45rem;
+  opacity:.6;
+}
+
+/* ── ABOUT ── */
+.about-section{
+  padding:clamp(4rem,10vh,7rem) clamp(1.5rem,4vw,3rem) clamp(5rem,12vh,9rem);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(3rem,8vw,7rem);
+  border-top:1px solid var(--t3);
+  opacity:0;
+  transform:translateY(32px);
+  transition:opacity .9s ease, transform .9s ease;
+}
+
+.about-section.vis{opacity:1;transform:translateY(0);}
+
+@media(max-width:600px){
+  .about-section{grid-template-columns:1fr;}
+  .entry.side,.entry.side-offset{grid-template-columns:1fr;}
+  .entry.side-offset .photo:last-child{margin-bottom:0;}
+  .entry.lrg .photo,.entry.lrg-r .photo{max-width:100%;margin-left:0;}
+}
+
+.about-head{
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:300;
+  letter-spacing:-.02em;
+  line-height:1.1;
+  margin-bottom:2rem;
+}
+
+.about-head em{font-style:italic;}
+
+.about-body p{
+  font-size:.85rem;
+  font-weight:300;
+  color:var(--t2);
+  line-height:1.85;
+}
+
+.about-body p+p{margin-top:.8em;}
+
+.cl{list-style:none;margin-top:2rem;}
+
+.cl li{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:.65rem 0;
+  border-bottom:1px solid var(--t3);
+}
+
+.cl li:first-child{border-top:1px solid var(--t3);}
+
+.cl .ll{
+  font-family:var(--mono);
+  font-size:.56rem;
+  font-weight:300;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--t3);
+}
+
+.cl .lv{
+  font-size:.78rem;
+  font-weight:300;
+  color:var(--t2);
+}
+
+.cl a{color:var(--t2);text-decoration:none;transition:color .15s;}
+.cl a:hover{color:var(--t1);}
+
+/* ── FOOTER ── */
+footer{
+  padding:1.5rem clamp(1.5rem,4vw,3rem) clamp(2rem,5vh,3rem);
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid var(--t3);
+}
+
+footer span{
+  font-family:var(--mono);
+  font-size:.54rem;
+  font-weight:300;
+  color:var(--t3);
+  letter-spacing:.08em;
+  opacity:.5;
+}
+
+::selection{background:#333;color:var(--t1);}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-name">Petar Gueorguiev</div>
+  <div class="nav-links">
+    <a href="#work" class="on">Work</a>
+    <a href="#about">About</a>
+    <a href="mailto:petar@yourdomain.com">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="work">
+  <div class="hero-bg">
+    <!-- swap for real photo: <img src="images/hero.jpg" style="width:100%;height:100%;object-fit:cover;display:block;"> -->
+    <div class="hero-ph"><span>hero image</span></div>
+  </div>
+  <div class="hero-text">
+    <div class="hero-title">
+      <span class="line i1">Photography</span>
+      <span class="line i2">by Petar</span>
+      <span class="line i3">Gueorguiev</span>
+    </div>
+    <div class="hero-sub">
+      <p>Strasbourg, Alsace</p>
+      <p>48°34′N — 7°45′E</p>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<!-- SERIES 01 — PETITE FRANCE -->
+<section class="series">
+  <div class="slabel">
+    <span class="slabel-num">01</span>
+    <span class="slabel-name">Petite France</span>
+    <span class="slabel-yr">Strasbourg · 2024–25</span>
+  </div>
+
+  <div class="entry lrg">
+    <div class="photo r-16-9">
+      <div class="ph"><span>01 — Canal Saint-Martin du Rhin</span></div>
+    </div>
+    <div class="caption">
+      <div class="cap-title">Canal Saint-Martin du Rhin</div>
+      <div class="cap-note">Morning fog lifting. A single lamp still lit.</div>
+      <div class="cap-meta">Strasbourg · Jan 2025 · 35mm · f/2</div>
+    </div>
+  </div>
+
+  <div class="entry lrg-r">
+    <div class="photo r-4-5" style="margin-left:auto;max-width:52%">
+      <div class="ph"><span>02 — Rue du Bain aux Plantes</span></div>
+    </div>
+    <div class="caption" style="max-width:52%;margin-left:auto">
+      <div class="cap-title">Rue du Bain aux Plantes</div>
+      <div class="cap-note">The façades hold their colour well into dusk.</div>
+      <div class="cap-meta">Strasbourg · Oct 2024 · 50mm · f/2.8</div>
+    </div>
+  </div>
+
+  <div class="entry side-offset">
+    <div class="photo r-5-7">
+      <div class="ph"><span>03 — Pont du Corbeau</span></div>
+    </div>
+    <div class="photo r-3-2">
+      <div class="ph"><span>04 — Quai des Bateliers</span></div>
+    </div>
+  </div>
+  <div class="caption">
+    <div class="cap-title">Pont du Corbeau &amp; Quai des Bateliers</div>
+    <div class="cap-note">Low tide. No one crossed for an hour.</div>
+    <div class="cap-meta">Strasbourg · Feb 2025 · 28mm</div>
+  </div>
+</section>
+
+<!-- SERIES 02 — INTERIOR LIGHT -->
+<section class="series" style="padding-top:0">
+  <div class="slabel">
+    <span class="slabel-num">02</span>
+    <span class="slabel-name">Interior Light</span>
+    <span class="slabel-yr">Ongoing · 2023–</span>
+  </div>
+
+  <div class="entry lrg">
+    <div class="photo r-3-2" style="max-width:65%">
+      <div class="ph"><span>05 — Cathédrale Notre-Dame</span></div>
+    </div>
+    <div class="caption" style="max-width:65%">
+      <div class="cap-title">Cathédrale Notre-Dame</div>
+      <div class="cap-note">Stone absorbing rose glass for a few minutes each afternoon.</div>
+      <div class="cap-meta">Strasbourg · Mar 2024 · 85mm · f/5.6</div>
+    </div>
+  </div>
+
+  <div class="entry side">
+    <div class="photo r-1-1">
+      <div class="ph"><span>06 — Musée d'Art Moderne</span></div>
+    </div>
+    <div class="photo r-1-1" style="margin-top:5rem">
+      <div class="ph"><span>07 — Synagogue de la Paix</span></div>
+    </div>
+  </div>
+  <div class="caption">
+    <div class="cap-title">Musée d'Art Moderne &amp; Synagogue de la Paix</div>
+    <div class="cap-note">Rooms between things. Light arriving at an angle.</div>
+    <div class="cap-meta">Strasbourg · 2023–24</div>
+  </div>
+</section>
+
+<!-- SERIES 03 — ELSEWHERE -->
+<section class="series" style="padding-top:0">
+  <div class="slabel">
+    <span class="slabel-num">03</span>
+    <span class="slabel-name">Elsewhere</span>
+    <span class="slabel-yr">Europe · 2022–24</span>
+  </div>
+
+  <div class="entry lrg-r">
+    <div class="photo r-3-2" style="max-width:80%;margin-left:auto">
+      <div class="ph"><span>08 — Plovdiv Old Town</span></div>
+    </div>
+    <div class="caption" style="max-width:80%;margin-left:auto">
+      <div class="cap-title">Plovdiv Old Town</div>
+      <div class="cap-note">The houses lean toward each other across the lane. They have been doing this for two hundred years.</div>
+      <div class="cap-meta">Bulgaria · Aug 2023 · 50mm · f/2</div>
+    </div>
+  </div>
+
+  <div class="entry lrg">
+    <div class="photo r-7-4" style="max-width:60%">
+      <div class="ph"><span>09 — Colmar</span></div>
+    </div>
+    <div class="caption" style="max-width:60%">
+      <div class="cap-title">Colmar</div>
+      <div class="cap-note">Off-season. One window lit from inside.</div>
+      <div class="cap-meta">Alsace · Jan 2024 · 35mm · f/2.8</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="about-section" id="about">
+  <div>
+    <div class="about-head">Quiet<br>work,<br><em>made</em><br>slowly.</div>
+  </div>
+  <div>
+    <div class="about-body">
+      <p>I photograph with available light and deliberate patience. Most of my work is made on foot, in the early morning or late afternoon, returning to the same places until something shifts.</p>
+      <p>Based in Strasbourg. Available for editorial, architectural, and long-form documentary work. Prints on request.</p>
+    </div>
+    <ul class="cl">
+      <li>
+        <span class="ll">Email</span>
+        <span class="lv"><a href="mailto:petar@yourdomain.com">petar@yourdomain.com</a></span>
+      </li>
+      <li>
+        <span class="ll">Instagram</span>
+        <span class="lv"><a href="https://instagram.com/" target="_blank" rel="noopener">@yourhandle</a></span>
+      </li>
+      <li>
+        <span class="ll">Location</span>
+        <span class="lv">Strasbourg, FR</span>
+      </li>
+      <li>
+        <span class="ll">Availability</span>
+        <span class="lv">Open for commission</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 Petar Gueorguiev</span>
+  <span>All photographs reserved</span>
+</footer>
+
+<script>
+(function(){
+
+  // ── Custom cursor
+  var cur = document.getElementById('cur');
+  var mx=window.innerWidth/2, my=window.innerHeight/2;
+  var cx=mx, cy=my;
+
+  document.addEventListener('mousemove', function(e){
+    mx=e.clientX; my=e.clientY;
+  });
+
+  document.querySelectorAll('.photo').forEach(function(el){
+    el.addEventListener('mouseenter',function(){cur.classList.add('big');});
+    el.addEventListener('mouseleave',function(){cur.classList.remove('big');});
+  });
+
+  (function loop(){
+    cx+=(mx-cx)*.12;
+    cy+=(my-cy)*.12;
+    cur.style.left=cx+'px';
+    cur.style.top=cy+'px';
+    requestAnimationFrame(loop);
+  })();
+
+  // ── Hero entrance
+  window.addEventListener('load', function(){
+    document.querySelectorAll('.hero-title .line').forEach(function(el){
+      el.classList.add('up');
+    });
+    document.querySelector('.hero-sub').classList.add('up');
+    document.querySelector('.hero-scroll').classList.add('up');
+  });
+
+  // ── IntersectionObserver for scroll reveals
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('vis');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -60px 0px'});
+
+  document.querySelectorAll('.slabel,.photo,.caption,.about-section').forEach(function(el){
+    io.observe(el);
+  });
+
+  // ── Subtle parallax on photos
+  function onScroll(){
+    var scrollY = window.scrollY;
+    document.querySelectorAll('.photo.vis img').forEach(function(img){
+      var rect = img.closest('.photo').getBoundingClientRect();
+      var center = rect.top + rect.height/2 - window.innerHeight/2;
+      img.style.transform = 'translateY('+(-center*.025)+'px)';
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // ── Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(this.getAttribute('href'));
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
