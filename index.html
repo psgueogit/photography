@@ -310,12 +310,8 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 (function(){
 
   var BASE = 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/';
-  var filenames = [
-    'IMG_20241020_180652.jpg',
-    'IMG_20250108_133221.jpg',
-    'IMG_20250223_154308.jpg',
-    'IMG_20250120_121832.jpg'
-  ];
+  var API  = 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos';
+  var KEY  = 'sb_publishable_YTRqw9owu4yFiR2Q9hFXEg_IZ_9Cs3-';
 
   /* ── Cursor ── */
   var cur = document.getElementById('cur');
@@ -354,30 +350,44 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   /* ── Build grid ── */
   var grid = document.getElementById('grid');
 
-  filenames.forEach(function(name, i){
-    var cell = document.createElement('div');
-    cell.className = 'cell';
+  function buildGrid(names){
+    var grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    names.forEach(function(name, i){
+      var cell = document.createElement('div');
+      cell.className = 'cell';
+      var img = document.createElement('img');
+      img.src = BASE + encodeURIComponent(name);
+      img.alt = '';
+      img.loading = i === 0 ? 'eager' : 'lazy';
+      cell.addEventListener('mouseenter', function(){ cur.classList.add('big'); cell.classList.add('expand'); });
+      cell.addEventListener('mouseleave', function(){ cur.classList.remove('big'); cell.classList.remove('expand'); });
+      cell.appendChild(img);
+      grid.appendChild(cell);
+      io.observe(cell);
+    });
+    io.observe(document.querySelector('.about-section'));
+    if(window.matchMedia('(hover:none)').matches){
+      var mio = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ e.target.classList.toggle('expand', e.isIntersecting); });
+      },{threshold:0.5});
+      grid.querySelectorAll('.cell').forEach(function(c){ mio.observe(c); });
+    }
+  }
 
-    var img = document.createElement('img');
-    img.src = BASE + encodeURIComponent(name);
-    img.alt = '';
-    img.loading = i === 0 ? 'eager' : 'lazy';
-
-    cell.addEventListener('mouseenter', function(){
-      cur.classList.add('big');
-      this.classList.add('expand');
-    }.bind(cell));
-    cell.addEventListener('mouseleave', function(){
-      cur.classList.remove('big');
-      this.classList.remove('expand');
-    }.bind(cell));
-
-    cell.appendChild(img);
-    grid.appendChild(cell);
-    io.observe(cell);
-  });
-
-  io.observe(document.querySelector('.about-section'));
+  fetch(API, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
+    body: JSON.stringify({prefix:'',limit:100,offset:0,sortBy:{column:'name',order:'asc'}})
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(files){
+    var names = (Array.isArray(files) ? files : [])
+      .filter(function(f){ return f.name && /\.(jpg|jpeg|png|webp)$/i.test(f.name); })
+      .map(function(f){ return f.name; });
+    buildGrid(names);
+  })
+  .catch(function(e){ console.warn('fetch failed', e); });
 
   /* mobile: expand cell on scroll into view */
   var isMobile = window.matchMedia('(hover:none)').matches;
