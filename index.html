@@ -158,11 +158,13 @@ main{
   width:100%;
   height:auto;
   display:block;
-  transform:scale(0.93);
   transition:transform .9s cubic-bezier(.16,1,.3,1);
 }
-.cell.vis img{transform:scale(1);}
-.cell:hover img, .cell.expand img{transform:scale(1.04);}
+@media(hover:hover){
+  .cell img{transform:scale(0.96);}
+  .cell.vis img{transform:scale(1);}
+  .cell:hover img{transform:scale(1.04);}
+}
 
 /* stagger */
 .cell:nth-child(2){transition-delay:.08s;}
