@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
- 
+
 :root{
   --bg:#1a1a1a;
   --bg2:#202020;
@@ -19,9 +19,9 @@
   --t3:#3a3a38;
   --sans:'Syne',system-ui,sans-serif;
   --mono:'DM Mono','Courier New',monospace;
-  --base:https://dixmmcantndwnpbaslfc.supabase.co/storage/v1/object/public/photos;
+  --base:https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos;
 }
- 
+
 html{
   background:var(--bg);
   color:var(--t1);
@@ -30,9 +30,9 @@ html{
   -webkit-font-smoothing:antialiased;
   cursor:none;
 }
- 
+
 body{min-height:100vh;overflow-x:hidden;}
- 
+
 body::after{
   content:'';
   position:fixed;inset:0;
@@ -40,7 +40,7 @@ body::after{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:180px 180px;
 }
- 
+
 /* cursor */
 #cur{
   position:fixed;width:8px;height:8px;border-radius:50%;
@@ -50,7 +50,7 @@ body::after{
   mix-blend-mode:difference;
 }
 #cur.big{width:56px;height:56px;}
- 
+
 /* nav */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:1000;
@@ -67,7 +67,7 @@ nav{
 }
 .nav-links a:hover,
 .nav-links a.on{opacity:1;}
- 
+
 /* hero */
 .hero{
   height:100vh;
@@ -118,19 +118,19 @@ nav{
   0%,100%{transform:scaleY(1);opacity:.4;}
   50%{transform:scaleY(.4);opacity:1;}
 }
- 
+
 /* work section */
 #work-section{
   padding:clamp(5rem,12vh,9rem) clamp(1.5rem,4vw,3rem);
 }
- 
+
 /* loading state */
 .loading{
   font-family:var(--mono);font-size:.6rem;font-weight:300;
   letter-spacing:.14em;color:var(--t3);text-transform:uppercase;
   padding:4rem 0;
 }
- 
+
 /* photo entries — alternating layouts */
 .entry{
   margin-bottom:clamp(5rem,13vh,10rem);
@@ -138,7 +138,7 @@ nav{
   transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);
 }
 .entry.vis{opacity:1;transform:translateY(0);}
- 
+
 .photo{
   position:relative;overflow:hidden;background:var(--bg2);
 }
@@ -147,7 +147,7 @@ nav{
   transition:transform 8s ease;
 }
 .photo:hover img{transform:scale(1.03);}
- 
+
 /* about */
 .about-section{
   padding:clamp(4rem,10vh,7rem) clamp(1.5rem,4vw,3rem) clamp(5rem,12vh,9rem);
@@ -169,20 +169,20 @@ nav{
 .cl .lv{font-size:.78rem;font-weight:300;color:var(--t2);}
 .cl a{color:var(--t2);text-decoration:none;transition:color .15s;}
 .cl a:hover{color:var(--t1);}
- 
+
 footer{
   padding:1.5rem clamp(1.5rem,4vw,3rem) clamp(2rem,5vh,3rem);
   display:flex;justify-content:space-between;border-top:1px solid var(--t3);
 }
 footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(--t3);letter-spacing:.08em;opacity:.5;}
- 
+
 ::selection{background:#333;color:var(--t1);}
 </style>
 </head>
 <body>
- 
+
 <div id="cur"></div>
- 
+
 <nav>
   <div class="nav-name">Petar Gueorguiev</div>
   <div class="nav-links">
@@ -191,7 +191,7 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
     <a href="mailto:petar@yourdomain.com">Contact</a>
   </div>
 </nav>
- 
+
 <div class="hero" id="work">
   <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-text">
@@ -210,11 +210,11 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
     <span>Scroll</span>
   </div>
 </div>
- 
+
 <main id="work-section">
   <div class="loading">Loading</div>
 </main>
- 
+
 <div class="about-section" id="about">
   <div>
     <div class="about-head">Quiet<br>work,<br><em>made</em><br>slowly.</div>
@@ -232,19 +232,19 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
     </ul>
   </div>
 </div>
- 
+
 <footer>
   <span>© 2025 Petar Gueorguiev</span>
   <span>All photographs reserved</span>
 </footer>
- 
+
 <script>
 (function(){
- 
-  var SUPABASE_URL = 'https://dixmmcantndwnpbaslfc.supabase.co';
-  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpeG1tY2FudG5kd25wYmFzbGZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0MjA4NTMsImV4cCI6MjA2MDk5Njg1M30.placeholder';
+
+  var SUPABASE_URL = 'https://boowirehpxzrcosqvkad.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_YTRqw9owu4yFiR2Q9hFXEg_IZ_9Cs3-';
   var BUCKET = 'photos';
- 
+
   /* Layout patterns cycle — width%, margin-left, aspect-ratio */
   var layouts = [
     {w:'72%', ml:'0',    ar:'3/2'},
@@ -254,24 +254,24 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
     {w:'65%', ml:'auto', ar:'3/4'},
     {w:'55%', ml:'0',    ar:'3/2'},
   ];
- 
+
   /* ── Cursor ── */
   var cur = document.getElementById('cur');
   var mx = window.innerWidth/2, my = window.innerHeight/2, cx = mx, cy = my;
   document.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
   (function loop(){
-    cx += (mx-cx)*.25; cy += (my-cy)*.25;
+    cx += (mx-cx)*.20; cy += (my-cy)*.20;
     cur.style.left = cx+'px'; cur.style.top = cy+'px';
     requestAnimationFrame(loop);
   })();
- 
+
   /* ── IntersectionObserver ── */
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); }
     });
   },{threshold:0.08, rootMargin:'0px 0px -60px 0px'});
- 
+
   /* ── Parallax ── */
   window.addEventListener('scroll', function(){
     document.querySelectorAll('.entry.vis img').forEach(function(img){
@@ -280,7 +280,7 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
       img.style.transform = 'translateY('+(-c*.025)+'px)';
     });
   },{passive:true});
- 
+
   /* ── Smooth scroll ── */
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
@@ -288,7 +288,7 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
       if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
     });
   });
- 
+
   /* ── Hero entrance ── */
   function heroIn(){
     document.querySelectorAll('.hero-title .line').forEach(function(el){ el.classList.add('up'); });
@@ -297,7 +297,7 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
   }
   if(document.readyState==='complete'){ heroIn(); }
   else { window.addEventListener('load', heroIn); }
- 
+
   /* ── Fetch bucket listing ── */
   fetch(SUPABASE_URL+'/storage/v1/bucket/'+BUCKET+'/objects', {
     method: 'POST',
@@ -314,10 +314,10 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
     var images = files.filter(function(f){
       return f.name && /\.(jpg|jpeg|png|webp)$/i.test(f.name);
     });
- 
+
     var main = document.getElementById('work-section');
     main.innerHTML = '';
- 
+
     /* First image = hero */
     if(images.length > 0){
       var heroImg = document.createElement('img');
@@ -325,36 +325,36 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
       heroImg.alt = 'Hero';
       document.getElementById('hero-bg').appendChild(heroImg);
     }
- 
+
     /* Rest = flowing grid */
     images.forEach(function(file, i){
       var layout = layouts[i % layouts.length];
- 
+
       var entry = document.createElement('div');
       entry.className = 'entry';
- 
+
       var photo = document.createElement('div');
       photo.className = 'photo';
       photo.style.cssText =
         'max-width:'+layout.w+';'+
         'margin-left:'+layout.ml+';'+
         'aspect-ratio:'+layout.ar+';';
- 
+
       var img = document.createElement('img');
       img.src = SUPABASE_URL+'/storage/v1/object/public/'+BUCKET+'/'+encodeURIComponent(file.name);
       img.alt = '';
       img.loading = 'lazy';
- 
+
       /* cursor grow */
       photo.addEventListener('mouseenter', function(){ cur.classList.add('big'); });
       photo.addEventListener('mouseleave', function(){ cur.classList.remove('big'); });
- 
+
       photo.appendChild(img);
       entry.appendChild(photo);
       main.appendChild(entry);
       io.observe(entry);
     });
- 
+
     /* observe about */
     io.observe(document.querySelector('.about-section'));
   })
@@ -363,7 +363,7 @@ footer span{font-family:var(--mono);font-size:.54rem;font-weight:300;color:var(-
       '<p style="font-family:var(--mono);font-size:.6rem;color:var(--t3);padding:4rem 0">Could not load photos.</p>';
     console.error(err);
   });
- 
+
 })();
 </script>
 </body>
