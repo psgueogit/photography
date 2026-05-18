@@ -58,7 +58,8 @@ nav{
   padding:0.9rem var(--pad);
   display:flex;gap:2rem;
   background:rgba(17,17,19,0.55);
-
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid rgba(255,255,255,0.04);
   transition:background .3s;
 }
@@ -107,12 +108,12 @@ main{padding:clamp(3rem,7vh,5rem) var(--pad) clamp(5rem,12vh,9rem);}
 .grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:clamp(.75rem,1.5vw,1.25rem);
+  gap:0;
 }
 
 .cell{
   aspect-ratio:4/3;
-  background:var(--bg2);
+  background:var(--bg);
   overflow:hidden;
   opacity:0;
   transform:translateY(16px);
@@ -266,7 +267,6 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 
 <div class="about-section" id="about">
   <div>
-    <div>
     <div class="about-head">Work<br>in<br><em>progress.</em></div>
   </div>
   <div>
@@ -274,6 +274,14 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
       <p>This is an exploration. No agenda, no plan.</p>
       <p>Open to commissions. Prints on request. Coffee always.</p>
     </div>
+    <ul class="cl">
+      <li><span class="ll">Email</span><span class="lv"><a href="mailto:petar@yourdomain.com">petar@yourdomain.com</a></span></li>
+      <li><span class="ll">Instagram</span><span class="lv"><a href="https://instagram.com/" target="_blank" rel="noopener">@yourhandle</a></span></li>
+      <li><span class="ll">Location</span><span class="lv">Strasbourg, FR</span></li>
+      <li><span class="ll">Availability</span><span class="lv">Open for commission</span></li>
+    </ul>
+  </div>
+</div>
 
 <footer>
   <span>© 2025</span>
