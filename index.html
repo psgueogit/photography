@@ -363,6 +363,7 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
       img.src = BASE + encodeURIComponent(name);
       img.alt = '';
       img.loading = i === 0 ? 'eager' : 'lazy';
+      img.onerror = function(){ this.style.display='none'; };
       cell.addEventListener('mouseenter', function(){ cur.classList.add('big'); });
       cell.addEventListener('mouseleave', function(){ cur.classList.remove('big'); });
       cell.addEventListener('click', function(e){
@@ -411,7 +412,13 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   .then(function(r){ return r.json(); })
   .then(function(files){
     var names = (Array.isArray(files) ? files : [])
-      .filter(function(f){ return f.name && /\.(jpg|jpeg|png|webp)$/i.test(f.name); })
+      .filter(function(f){
+        return f.name
+          && /\.(jpg|jpeg|png|webp)$/i.test(f.name)
+          && f.name.indexOf('.emptyFolderPlaceholder') === -1
+          && f.id !== null
+          && f.metadata !== null;
+      })
       .map(function(f){ return f.name; });
     buildGrid(names);
   })
