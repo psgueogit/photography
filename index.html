@@ -102,10 +102,16 @@ nav a:hover, nav a.on{opacity:1;}
 main{padding:clamp(3rem,7vh,5rem) var(--pad) clamp(5rem,12vh,9rem);}
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+  display:flex;
   gap:3px;
-  align-items:start;
+  align-items:flex-start;
+}
+
+.grid-col{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
 }
 
 .cell{
@@ -113,22 +119,17 @@ main{padding:clamp(3rem,7vh,5rem) var(--pad) clamp(5rem,12vh,9rem);}
   opacity:0;
   transform:translateY(20px);
   transition:opacity .7s cubic-bezier(.16,1,.3,1),
-             transform .7s cubic-bezier(.16,1,.3,1),
-             box-shadow .3s ease;
+             transform .7s cubic-bezier(.16,1,.3,1);
   position:relative;
   z-index:1;
+  width:100%;
 }
 .cell.vis{opacity:1;transform:translateY(0);}
 
-.cell-inner{
-  width:100%;
-  overflow:hidden;
-}
+.cell-inner{width:100%;overflow:hidden;}
 
 .cell img{
-  width:100%;
-  height:auto;
-  display:block;
+  width:100%;height:auto;display:block;
   transition:transform .5s cubic-bezier(.16,1,.3,1);
 }
 
@@ -137,15 +138,12 @@ main{padding:clamp(3rem,7vh,5rem) var(--pad) clamp(5rem,12vh,9rem);}
     z-index:10;
     transform:scale(1.04);
     box-shadow:0 8px 40px rgba(0,0,0,.6);
-    transition:transform .4s cubic-bezier(.16,1,.3,1),
-               box-shadow .4s ease,
-               opacity .7s,
-               z-index 0s;
+    transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease,opacity .7s;
   }
 }
 
 @media(max-width:600px){
-  .grid{grid-template-columns:repeat(2,1fr);}
+  .grid-col:nth-child(3){display:none;}
 }
 
 .cell:nth-child(2){transition-delay:.08s;}
@@ -319,6 +317,12 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   function renderPage(){
     var grid = document.getElementById('grid');
     grid.innerHTML = '';
+    var cols = [0,1,2].map(function(){
+      var col = document.createElement('div');
+      col.className = 'grid-col';
+      grid.appendChild(col);
+      return col;
+    });
     var start = currentPage * PAGE;
     var slice = allNames.slice(start, start + PAGE);
     slice.forEach(function(name, i){
@@ -334,7 +338,7 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
       cell.addEventListener('mouseleave', function(){ cur.classList.remove('big'); });
       inner.appendChild(img);
       cell.appendChild(inner);
-      grid.appendChild(cell);
+      cols[i % 3].appendChild(cell);
       io.observe(cell);
     });
 
