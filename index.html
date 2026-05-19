@@ -22,8 +22,7 @@
 }
 
 html{
-  background:#111113;
-  background-image:radial-gradient(ellipse at 30% 0%, #1a1a2a 0%, transparent 60%);
+  background:radial-gradient(ellipse at 30% 0%, #1a1a2a 0%, transparent 60%), #111113;
   color:var(--t1);
   font-family:var(--sans);
   font-size:15px;
@@ -41,6 +40,7 @@ body::after{
 }
 @media(max-width:600px){
   body::after{opacity:.015;}
+  html{background:#111113;}
 }
 
 #cur{
@@ -401,14 +401,15 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     });
   }
 
-  lb.addEventListener('click', function(){
-    lb.classList.remove('open');
-    document.body.style.overflow = '';
-    setTimeout(function(){ lbImg.src = ''; }, 500);
+  lb.addEventListener('click', function(e){
+    if(e.target === lb){
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
   });
 
   document.addEventListener('keydown', function(e){
-    if(e.key==='Escape'){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+    if(e.key==='Escape'){ lb.classList.remove('open'); document.body.style.overflow = ''; lbImg.src=''; }
   });
 
 })();
