@@ -119,7 +119,10 @@ nav a:hover, nav a.on{opacity:1;}
   justify-content:flex-end;
   padding:5rem var(--pad) clamp(2rem,5vh,3rem);
   position:relative;
+  overflow:hidden;
 }
+
+
 
 .hl-title{overflow:hidden;}
 .hl-title span{
@@ -306,6 +309,10 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 <div class="headline" id="work">
   <div class="arcs">
     <svg id="arcs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Vertical lines -->
+      <g id="vl-g1"><line class="arc near" x1="250" y1="-100" x2="250" y2="600"/></g>
+      <g id="vl-g2"><line class="arc mid" x1="580" y1="200" x2="580" y2="900"/></g>
+      <g id="vl-g3"><line class="arc far" x1="820" y1="-200" x2="820" y2="700"/></g>
       <!-- Arc group 1 — top left origin, slow parallax -->
       <g id="arc-g1">
         <path class="arc far"  d="M-200,150 Q200,-150 600,50  Q1000,250 1200,150"/>
@@ -324,14 +331,12 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
       </g>
     </svg>
   </div>
-  <div class="hl-title" id="hl-title">
-    <span>Photography</span>
-    <span class="i2">by Petar</span>
-    <span class="i3">Gueorguiev</span>
-    <div class="hl-cut" id="hl-cut"></div>
+<div class="hl-title">
+    <span>Photographs</span>
+    <span class="i2">by Petar <em>G.</em></span>
   </div>
   <div class="hl-sub">
-    <span class="hl-coords">Strasbourg 48°34′N 7°45′E</span>
+    <span class="hl-coords">Strasbourg — 48°34′N 7°45′E</span>
     <div class="scroll-ind">
       <div class="scroll-line"></div>
       <span>Scroll</span>
@@ -400,19 +405,8 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     document.querySelectorAll('.hl-title span').forEach(function(el){ el.classList.add('up'); });
     var s = document.querySelector('.hl-sub');
     if(s) s.classList.add('up');
-    /* position cut through middle of i2 span */
-    setTimeout(function(){
-      var title = document.getElementById('hl-title');
-      var i2 = title.querySelector('.i2');
-      var cut = document.getElementById('hl-cut');
-      if(i2 && cut){
-        var titleRect = title.getBoundingClientRect();
-        var i2Rect = i2.getBoundingClientRect();
-        var mid = i2Rect.top + i2Rect.height * 0.52 - titleRect.top;
-        cut.style.top = mid + 'px';
-        cut.classList.add('up');
-      }
-    }, 800);
+
+
   }
   if(document.readyState==='complete'){ hlIn(); } else { window.addEventListener('load', hlIn); }
 
@@ -463,6 +457,10 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   var pill = document.getElementById('pill');
   if(pill){
     var ticking = false;
+    var vl1 = document.getElementById('vl-g1');
+    var vl2 = document.getElementById('vl-g2');
+    var vl3 = document.getElementById('vl-g3');
+
     window.addEventListener('scroll', function(){
       if(!ticking){
         requestAnimationFrame(function(){
@@ -483,6 +481,10 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   var g3 = document.getElementById('arc-g3');
   var hl = document.querySelector('.headline');
   if(g1 && hl){
+    var vl1 = document.getElementById('vl-g1');
+    var vl2 = document.getElementById('vl-g2');
+    var vl3 = document.getElementById('vl-g3');
+
     window.addEventListener('scroll', function(){
       var p = Math.min(window.scrollY / (hl.offsetHeight || window.innerHeight), 1);
       g1.style.transform = 'translateY('+ (-p * 60) +'px)';
