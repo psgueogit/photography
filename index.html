@@ -346,11 +346,15 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 
   var BUCKETS = {
     plain:  'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/',
-    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/border/'
+    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/border/'
   };
   var APIS = {
     plain:  'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos',
-    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/border'
+    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos'
+  };
+  var PREFIXES = {
+    plain:  '',
+    border: 'border/'
   };
   var KEY = 'sb_publishable_YTRqw9owu4yFiR2Q9hFXEg_IZ_9Cs3-';
   var currentBucket = 'plain';
@@ -411,7 +415,7 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     fetch(API, {
       method: 'POST',
       headers: {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
-      body: JSON.stringify({prefix:'',limit:100,offset:0,sortBy:{column:'name',order:'asc'}})
+      body: JSON.stringify({prefix:PREFIXES[currentBucket],limit:100,offset:0,sortBy:{column:'name',order:'asc'}})
     })
     .then(function(r){ return r.json(); })
     .then(function(files){
