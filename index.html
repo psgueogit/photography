@@ -105,11 +105,6 @@ nav a:hover, nav a.on{opacity:1;}
   background:transparent;
 }
 
-.headline{
-  position:relative;
-  z-index:1;
-}
-
 .hl-title, .hl-sub{position:relative;z-index:2;}
 
 .headline{
@@ -290,6 +285,39 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   opacity:1;
 }
 
+/* zoom control */
+.zoom-control{
+  position:fixed;
+  bottom:2rem;
+  right:var(--pad);
+  z-index:500;
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  opacity:0;
+  transition:opacity .3s;
+  pointer-events:none;
+}
+.zoom-control.vis{opacity:1;pointer-events:auto;}
+.zoom-control input[type=range]{
+  width:70px;height:2px;
+  -webkit-appearance:none;appearance:none;
+  background:rgba(255,255,255,0.2);
+  border-radius:2px;cursor:pointer;
+}
+.zoom-control input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:10px;height:10px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.6);
+  cursor:pointer;
+}
+.zoom-label{
+  font-family:var(--mono);font-size:.52rem;
+  color:var(--t3);letter-spacing:.1em;
+  white-space:nowrap;
+}
+
 ::selection{background:#333;color:var(--t1);}
 </style>
 </head>
@@ -310,9 +338,9 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   <div class="arcs">
     <svg id="arcs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
       <!-- Vertical lines -->
-      <g id="vl-g1"><line class="arc near" x1="250" y1="-100" x2="250" y2="600"/></g>
-      <g id="vl-g2"><line class="arc mid" x1="580" y1="200" x2="580" y2="900"/></g>
-      <g id="vl-g3"><line class="arc far" x1="820" y1="-200" x2="820" y2="700"/></g>
+      <g id="vl-g1"><line stroke="var(--t3)" stroke-width="0.8" opacity="0.15" x1="820" y1="-150" x2="820" y2="700"/></g>
+      <g id="vl-g2"><line stroke="var(--t3)" stroke-width="0.5" opacity="0.09" x1="870" y1="100" x2="870" y2="900"/></g>
+      <g id="vl-g3"><line stroke="var(--t3)" stroke-width="0.3" opacity="0.06" x1="920" y1="-50" x2="920" y2="800"/></g>
       <!-- Arc group 1 — top left origin, slow parallax -->
       <g id="arc-g1">
         <path class="arc far"  d="M-200,150 Q200,-150 600,50  Q1000,250 1200,150"/>
@@ -362,6 +390,8 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   </div>
 </div>
 
+<div class="zoom-control" id="zoom-control"><span class="zoom-label">⊟</span><input type="range" id="zoom-slider" min="1" max="6" value="3" step="1"><span class="zoom-label">⊞</span></div>
+
 <div class="contact-block">
   <ul class="cl">
     <li><span class="ll">Email</span><span class="lv"><a href="mailto:petar@yourdomain.com">petar@yourdomain.com</a></span></li>
@@ -379,8 +409,27 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 <script>
 (function(){
 
-  var BASE = 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/';
-  var API  = 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos';
+  var BUCKETS = {
+    plain: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/',
+    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/border/'
+  };
+  var APIS = {
+    plain: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos',
+    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/border'
+  };
+  var currentBucket = 'plain';
+  function toggleBucket(){
+    currentBucket = currentBucket === 'plain' ? 'border' : 'plain';
+    BASE = BUCKETS[currentBucket];
+    API  = APIS[currentBucket];
+    var btn = document.getElementById('border-toggle');
+    btn.textContent = currentBucket === 'plain' ? 'No border' : 'With border';
+    btn.style.color = currentBucket === 'border' ? 'var(--t1)' : 'var(--t3)';
+    loadPhotos();
+  }
+
+  var API  = APIS.plain;
+  var BASE = BUCKETS.plain;
   var KEY  = 'sb_publishable_YTRqw9owu4yFiR2Q9hFXEg_IZ_9Cs3-';
 
   var cur = document.getElementById('cur');
@@ -405,14 +454,10 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     document.querySelectorAll('.hl-title span').forEach(function(el){ el.classList.add('up'); });
     var s = document.querySelector('.hl-sub');
     if(s) s.classList.add('up');
-
-
   }
   if(document.readyState==='complete'){ hlIn(); } else { window.addEventListener('load', hlIn); }
 
-
-
-
+  function loadPhotos(){
   function buildGrid(names){
     var grid = document.getElementById('grid');
     grid.innerHTML = '';
@@ -453,6 +498,9 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     buildGrid(names);
   })
   .catch(function(e){ console.warn('fetch failed', e); });
+  }
+
+  loadPhotos();
 
   var pill = document.getElementById('pill');
   if(pill){
@@ -489,6 +537,22 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
       var p = Math.min(window.scrollY / (hl.offsetHeight || window.innerHeight), 1);
       g1.style.transform = 'translateY('+ (-p * 60) +'px)';
     }, {passive:true});
+  }
+
+  /* zoom control */
+  var zoomControl = document.getElementById('zoom-control');
+  var zoomSlider = document.getElementById('zoom-slider');
+  var grid = document.getElementById('grid');
+
+  window.addEventListener('scroll', function(){
+    var pastCover = window.scrollY > window.innerHeight * 0.5;
+    if(zoomControl) zoomControl.classList.toggle('vis', pastCover);
+  }, {passive:true});
+
+  if(zoomSlider){
+    zoomSlider.addEventListener('input', function(){
+      if(grid) grid.style.gridTemplateColumns = 'repeat('+this.value+',1fr)';
+    });
   }
 
   /* lightbox */
