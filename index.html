@@ -186,6 +186,8 @@ main{padding:clamp(3rem,7vh,5rem) var(--pad) clamp(5rem,12vh,9rem);}
   position:relative;z-index:1;cursor:none;
 }
 .grid img.vis{opacity:1;transform:translateY(0);}
+.grid.border-mode{gap:8px;background:var(--bg);}
+.grid.border-mode img{aspect-ratio:13/18;}
 @media(hover:hover){
   .grid img:hover{transform:scale(1.04);z-index:10;box-shadow:0 12px 48px rgba(0,0,0,.8);}
 }
@@ -480,6 +482,7 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     currentBucket = currentBucket === 'plain' ? 'border' : 'plain';
     borderBtn.textContent = currentBucket === 'border' ? 'On' : 'Off';
     borderBtn.classList.toggle('active', currentBucket === 'border');
+    grid.classList.toggle('border-mode', currentBucket === 'border');
     loadPhotos();
   });
 
