@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photography</title>
+<title>Photographs by Petar G.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@300;400&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
@@ -48,9 +48,7 @@ body::after{
   -webkit-backdrop-filter:blur(4px);
   pointer-events:none;z-index:999999;
   transform:translate(-50%,-50%);
-  transition:width .4s cubic-bezier(.16,1,.3,1),
-             height .4s cubic-bezier(.16,1,.3,1),
-             backdrop-filter .3s;
+  transition:width .4s cubic-bezier(.16,1,.3,1),height .4s cubic-bezier(.16,1,.3,1);
 }
 #cur.big{
   width:64px;height:64px;
@@ -63,26 +61,15 @@ body::after{
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:1.1rem var(--pad);
-  display:flex;gap:2rem;
+  display:flex;align-items:center;justify-content:space-between;
   background:rgba(17,17,19,0.55);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid rgba(255,255,255,0.04);
   transition:background .3s;
 }
-nav a{color:var(--t1)!important;}
-.nav-logo{
-  font-family:var(--mono);
-  font-size:.62rem;
-  font-weight:400;
-  letter-spacing:.18em;
-  color:var(--t1);
-  opacity:.6;
-  border:1px solid rgba(255,255,255,0.2);
-  padding:.3rem .5rem;
-  border-radius:3px;
-  line-height:1;
-}
+.nav-left{display:flex;gap:2rem;align-items:center;}
+.nav-right{display:flex;gap:.75rem;align-items:center;}
 nav a{
   font-family:var(--mono);font-size:.6rem;font-weight:300;
   letter-spacing:.14em;text-transform:uppercase;
@@ -90,27 +77,58 @@ nav a{
 }
 nav a:hover, nav a.on{opacity:1;}
 
-.arcs{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index:0;
+/* layout panel button */
+.layout-btn{
+  background:transparent;border:none;cursor:none;
+  color:var(--t3);opacity:.6;padding:.2rem;
+  display:flex;align-items:center;transition:opacity .2s;
 }
-.arcs svg{
-  position:absolute;
-  width:100%;
-  height:100%;
-  fill:none;
-  background:transparent;
-}
+.layout-btn:hover{opacity:1;}
+.layout-btn svg{width:14px;height:14px;display:block;}
 
-.headline{
-  position:relative;
-  z-index:1;
+/* layout panel */
+.layout-panel{
+  position:fixed;top:3.5rem;right:var(--pad);z-index:200;
+  background:rgba(17,17,19,0.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;
+  padding:1.25rem 1.5rem;
+  min-width:220px;
+  opacity:0;pointer-events:none;
+  transform:translateY(-8px);
+  transition:opacity .2s ease, transform .2s ease;
 }
+.layout-panel.open{opacity:1;pointer-events:auto;transform:translateY(0);}
 
-.hl-title, .hl-sub{position:relative;z-index:2;}
+.lp-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.5rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.lp-row:last-child{border-bottom:none;}
+.lp-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);}
+
+.lp-slider{
+  width:90px;height:2px;
+  -webkit-appearance:none;appearance:none;
+  background:rgba(255,255,255,0.2);border-radius:2px;cursor:pointer;
+}
+.lp-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:10px;height:10px;
+  border-radius:50%;background:var(--t1);cursor:pointer;
+}
+.lp-val{font-family:var(--mono);font-size:.54rem;color:var(--t2);min-width:2ch;text-align:right;}
+
+/* border toggle */
+.lp-toggle{
+  font-family:var(--mono);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:3px;cursor:pointer;
+  background:transparent;border:1px solid rgba(255,255,255,0.15);
+  color:var(--t3);transition:all .2s;
+}
+.lp-toggle.active{border-color:var(--t1);color:var(--t1);}
 
 .headline{
   height:100svh;
@@ -122,7 +140,7 @@ nav a:hover, nav a.on{opacity:1;}
   overflow:hidden;
 }
 
-
+.hl-title, .hl-sub{position:relative;z-index:2;}
 
 .hl-title{overflow:hidden;}
 .hl-title span{
@@ -161,68 +179,36 @@ main{padding:clamp(3rem,7vh,5rem) var(--pad) clamp(5rem,12vh,9rem);}
   grid-template-columns:repeat(3,1fr);
   gap:2px;
 }
-
 .grid img{
-  width:100%;
-  aspect-ratio:4/5;
-  object-fit:cover;
-  display:block;
-  opacity:0;
-  transform:translateY(16px);
-  transition:opacity .7s cubic-bezier(.16,1,.3,1),
-             transform .7s cubic-bezier(.16,1,.3,1),
-             box-shadow .4s ease;
-  position:relative;
-  z-index:1;
-  cursor:none;
+  width:100%;aspect-ratio:4/5;object-fit:cover;display:block;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),box-shadow .4s ease;
+  position:relative;z-index:1;cursor:none;
 }
-
 .grid img.vis{opacity:1;transform:translateY(0);}
-
 @media(hover:hover){
-  .grid img:hover{
-    transform:scale(1.04);
-    z-index:10;
-    box-shadow:0 12px 48px rgba(0,0,0,.8);
-  }
+  .grid img:hover{transform:scale(1.04);z-index:10;box-shadow:0 12px 48px rgba(0,0,0,.8);}
 }
-
 @media(max-width:600px){
   .grid{grid-template-columns:repeat(2,1fr);gap:2px;}
 }
 
-
-
-
-
-
-
 .about-section{
   padding:clamp(3rem,8vh,6rem) var(--pad) clamp(4rem,10vh,7rem);
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:clamp(2rem,5vw,5rem);
-  position:relative;
-  opacity:0;transform:translateY(32px);
-  transition:opacity .9s ease,transform .9s ease;
-  box-sizing:border-box;
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);
+  position:relative;opacity:0;transform:translateY(32px);
+  transition:opacity .9s ease,transform .9s ease;box-sizing:border-box;
 }
 .about-section.vis{opacity:1;transform:translateY(0);}
 .about-section > div{min-width:0;box-sizing:border-box;}
 @media(max-width:768px){.about-section{grid-template-columns:1fr;gap:2rem;}}
-
 .about-head{font-size:clamp(1.8rem,4vw,3rem);font-weight:300;letter-spacing:-.02em;line-height:1.1;margin-bottom:2rem;}
 .about-section::before{content:'';position:absolute;top:0;left:var(--pad);right:var(--pad);height:1px;background:var(--t3);opacity:.5;}
 .about-head em{font-style:italic;}
 .about-body p{font-size:.92rem;font-weight:300;color:var(--t2);line-height:1.85;}
 .about-body p+p{margin-top:.8em;}
 
-.contact-block{
-  padding:0 var(--pad) clamp(3rem,8vh,5rem);
-  width:100%;
-  box-sizing:border-box;
-  overflow:hidden;
-}
+.contact-block{padding:0 var(--pad) clamp(3rem,8vh,5rem);width:100%;box-sizing:border-box;overflow:hidden;}
 .cl{list-style:none;width:100%;box-sizing:border-box;}
 .cl li{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--t3);}
 .cl li:first-child{border-top:1px solid var(--t3);}
@@ -243,52 +229,28 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   display:none;position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
   z-index:1000;font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
   padding:.45rem 1.1rem;border:1px solid rgba(255,255,255,0.2);border-radius:99px;
-  color:rgba(255,255,255,0.7);
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+  color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
-@media(hover:none){
-  .scroll-pill{display:block;}
-  #cur{display:none;}
-
-
-}
-
-
+@media(hover:none){.scroll-pill{display:block;}#cur{display:none;}}
 
 #lightbox{
   position:fixed;inset:0;z-index:99998;
   background:rgba(255,255,255,0.08);
   backdrop-filter:blur(24px) saturate(1.4);
   -webkit-backdrop-filter:blur(24px) saturate(1.4);
-  display:flex;
-  align-items:center;justify-content:center;
-  cursor:none;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .3s ease;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;opacity:0;pointer-events:none;transition:opacity .3s ease;
 }
-#lightbox.open{
-  opacity:1;
-  pointer-events:auto;
-}
+#lightbox.open{opacity:1;pointer-events:auto;}
 #lightbox img{
-  max-width:88vw;max-height:88vh;
-  width:auto;height:auto;
-  display:block;
-  object-fit:contain;
-  border-radius:2px;
-  transform:scale(0.85);
-  opacity:0;
-  transform-origin:center center;
+  max-width:88vw;max-height:88vh;width:auto;height:auto;
+  display:block;object-fit:contain;border-radius:2px;
+  transform:scale(0.85);opacity:0;transform-origin:center center;
   transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .4s ease;
   box-shadow:0 32px 80px rgba(0,0,0,.5);
 }
-#lightbox.open img{
-  transform:scale(1);
-  opacity:1;
-}
+#lightbox.open img{transform:scale(1);opacity:1;}
 
 ::selection{background:#333;color:var(--t1);}
 </style>
@@ -296,42 +258,45 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 <body>
 
 <div id="cur"></div>
-<div id="lightbox"><img id="lb-img" src="" alt=""></div>
-<div class="scroll-pill" id="pill">Scroll</div>
+<div id="lightbox"></div>
+<div class="scroll-pill" id="pill">↑ Top</div>
 
 <nav>
-  <a href="#work" class="on">Work</a>
-  <a href="albums.html">Albums</a>
-  <a href="#about">About</a>
-  <a href="mailto:petar@yourdomain.com">Contact</a>
+  <div class="nav-left">
+    <a href="#work" class="on">Work</a>
+    <a href="albums.html">Albums</a>
+    <a href="#about">About</a>
+    <a href="mailto:petar@yourdomain.com">Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="layout-btn" id="layout-btn" title="Layout options">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2">
+        <rect x="1" y="1" width="5" height="5"/><rect x="8" y="1" width="5" height="5"/>
+        <rect x="1" y="8" width="5" height="5"/><rect x="8" y="8" width="5" height="5"/>
+      </svg>
+    </button>
+  </div>
 </nav>
 
-<div class="headline" id="work">
-  <div class="arcs">
-    <svg id="arcs-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <!-- Vertical lines -->
-      <g id="vl-g1"><line class="arc near" x1="250" y1="-100" x2="250" y2="600"/></g>
-      <g id="vl-g2"><line class="arc mid" x1="580" y1="200" x2="580" y2="900"/></g>
-      <g id="vl-g3"><line class="arc far" x1="820" y1="-200" x2="820" y2="700"/></g>
-      <!-- Arc group 1 — top left origin, slow parallax -->
-      <g id="arc-g1">
-        <path class="arc far"  d="M-200,150 Q200,-150 600,50  Q1000,250 1200,150"/>
-        <path class="arc mid"  d="M-200,310 Q200,10  600,210  Q1000,410 1200,310"/>
-        <path class="arc near" d="M-200,470 Q200,170 600,370  Q1000,570 1200,470"/>
-      </g>
-      <g id="arc-g2">
-        <path class="arc near" d="M-200,530 Q300,280 700,480  Q1000,680 1200,530"/>
-        <path class="arc mid"  d="M-200,690 Q300,440 700,640  Q1000,840 1200,690"/>
-        <path class="arc far"  d="M-200,850 Q300,600 700,800  Q1000,1000 1200,850"/>
-      </g>
-      <g id="arc-g3">
-        <path class="arc mid"  d="M150,-200 Q450,50  650,380 Q850,710 750,1200"/>
-        <path class="arc near" d="M350,-200 Q650,50  850,380 Q1050,710 950,1200"/>
-        <path class="arc far"  d="M550,-200 Q850,50  1050,380 Q1250,710 1150,1200"/>
-      </g>
-    </svg>
+<div class="layout-panel" id="layout-panel">
+  <div class="lp-row">
+    <span class="lp-label">Columns</span>
+    <input type="range" class="lp-slider" id="col-slider" min="1" max="6" value="3" step="1">
+    <span class="lp-val" id="col-val">3</span>
   </div>
-<div class="hl-title">
+  <div class="lp-row">
+    <span class="lp-label">Zoom</span>
+    <input type="range" class="lp-slider" id="zoom-slider" min="50" max="150" value="100" step="10">
+    <span class="lp-val" id="zoom-val">100%</span>
+  </div>
+  <div class="lp-row">
+    <span class="lp-label">Borders</span>
+    <button class="lp-toggle" id="border-btn">Off</button>
+  </div>
+</div>
+
+<div class="headline" id="work">
+  <div class="hl-title">
     <span>Photographs</span>
     <span class="i2">by Petar <em>G.</em></span>
   </div>
@@ -365,7 +330,7 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 <div class="contact-block">
   <ul class="cl">
     <li><span class="ll">Email</span><span class="lv"><a href="mailto:petar@yourdomain.com">petar@yourdomain.com</a></span></li>
-    <li><span class="ll">Instagram</span><span class="lv"><a href="https://instagram.com/" target="_blank" rel="noopener">@psgueo</a></span></li>
+    <li><span class="ll">Instagram</span><span class="lv"><a href="https://instagram.com/psgueo" target="_blank" rel="noopener">@psgueo</a></span></li>
     <li><span class="ll">Location</span><span class="lv">Strasbourg, FR</span></li>
     <li><span class="ll">Availability</span><span class="lv">Open for commission · up for coffee</span></li>
   </ul>
@@ -379,21 +344,30 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
 <script>
 (function(){
 
-  var BASE = 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/';
-  var API  = 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos';
-  var KEY  = 'sb_publishable_YTRqw9owu4yFiR2Q9hFXEg_IZ_9Cs3-';
+  var BUCKETS = {
+    plain:  'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/photos/',
+    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/public/border/'
+  };
+  var APIS = {
+    plain:  'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/photos',
+    border: 'https://boowirehpxzrcosqvkad.supabase.co/storage/v1/object/list/border'
+  };
+  var KEY = 'sb_publishable_YTRqw9owu4yFiR2Q9hFXEg_IZ_9Cs3-';
+  var currentBucket = 'plain';
 
+  /* cursor */
   var cur = document.getElementById('cur');
   var mx = window.innerWidth/2, my = window.innerHeight/2, cx = mx, cy = my;
   document.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; });
   (function loop(){ cx+=(mx-cx)*.20; cy+=(my-cy)*.20; cur.style.left=cx+'px'; cur.style.top=cy+'px'; requestAnimationFrame(loop); })();
 
+  /* intersection observer */
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); } });
   },{threshold:0.06, rootMargin:'0px 0px -40px 0px'});
-
   io.observe(document.querySelector('.about-section'));
 
+  /* smooth scroll */
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
       var t = document.querySelector(this.getAttribute('href'));
@@ -401,21 +375,19 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     });
   });
 
+  /* headline animation */
   function hlIn(){
     document.querySelectorAll('.hl-title span').forEach(function(el){ el.classList.add('up'); });
     var s = document.querySelector('.hl-sub');
     if(s) s.classList.add('up');
-
-
   }
   if(document.readyState==='complete'){ hlIn(); } else { window.addEventListener('load', hlIn); }
 
-
-
-
+  /* grid */
   function buildGrid(names){
     var grid = document.getElementById('grid');
     grid.innerHTML = '';
+    var BASE = BUCKETS[currentBucket];
     names.forEach(function(name, i){
       var img = document.createElement('img');
       img.src = BASE + encodeURIComponent(name) + '?width=600&quality=65';
@@ -434,62 +406,77 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     });
   }
 
-  fetch(API, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
-    body: JSON.stringify({prefix:'',limit:100,offset:0,sortBy:{column:'name',order:'asc'}})
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(files){
-    var names = (Array.isArray(files) ? files : [])
-      .filter(function(f){
-        return f.name
-          && f.id
-          && f.metadata
-          && /\.(jpg|jpeg|png|webp)$/i.test(f.name)
-          && f.name.indexOf('placeholder') === -1;
-      })
-      .map(function(f){ return f.name; });
-    buildGrid(names);
-  })
-  .catch(function(e){ console.warn('fetch failed', e); });
+  function loadPhotos(){
+    var API = APIS[currentBucket];
+    fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
+      body: JSON.stringify({prefix:'',limit:100,offset:0,sortBy:{column:'name',order:'asc'}})
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(files){
+      var names = (Array.isArray(files) ? files : [])
+        .filter(function(f){
+          return f.name && f.id && f.metadata
+            && /\.(jpg|jpeg|png|webp)$/i.test(f.name)
+            && f.name.indexOf('placeholder') === -1;
+        })
+        .map(function(f){ return f.name; });
+      buildGrid(names);
+    })
+    .catch(function(e){ console.warn('fetch failed', e); });
+  }
 
+  loadPhotos();
+
+  /* scroll pill — only past cover */
   var pill = document.getElementById('pill');
   if(pill){
-    var ticking = false;
-    var vl1 = document.getElementById('vl-g1');
-    var vl2 = document.getElementById('vl-g2');
-    var vl3 = document.getElementById('vl-g3');
-
-    window.addEventListener('scroll', function(){
-      if(!ticking){
-        requestAnimationFrame(function(){
-          var scrolled = window.scrollY > 80;
-          pill.textContent = scrolled ? '↑ Top' : 'View';
-          ticking = false;
-        });
-        ticking = true;
-      }
-    },{passive:true});
     pill.style.pointerEvents = 'auto';
     pill.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
-  }
-
-  /* arcs parallax */
-  var g1 = document.getElementById('arc-g1');
-  var g2 = document.getElementById('arc-g2');
-  var g3 = document.getElementById('arc-g3');
-  var hl = document.querySelector('.headline');
-  if(g1 && hl){
-    var vl1 = document.getElementById('vl-g1');
-    var vl2 = document.getElementById('vl-g2');
-    var vl3 = document.getElementById('vl-g3');
-
     window.addEventListener('scroll', function(){
-      var p = Math.min(window.scrollY / (hl.offsetHeight || window.innerHeight), 1);
-      g1.style.transform = 'translateY('+ (-p * 60) +'px)';
+      var pastCover = window.scrollY > window.innerHeight * 1.1;
+      pill.style.display = pastCover ? 'block' : 'none';
     }, {passive:true});
   }
+
+  /* layout panel */
+  var layoutBtn = document.getElementById('layout-btn');
+  var layoutPanel = document.getElementById('layout-panel');
+  var colSlider = document.getElementById('col-slider');
+  var colVal = document.getElementById('col-val');
+  var borderBtn = document.getElementById('border-btn');
+  var grid = document.getElementById('grid');
+
+  layoutBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    layoutPanel.classList.toggle('open');
+  });
+  document.addEventListener('click', function(){
+    layoutPanel.classList.remove('open');
+  });
+  layoutPanel.addEventListener('click', function(e){ e.stopPropagation(); });
+
+  colSlider.addEventListener('input', function(){
+    colVal.textContent = this.value;
+    grid.style.gridTemplateColumns = 'repeat('+this.value+',1fr)';
+  });
+
+  var zoomSlider = document.getElementById('zoom-slider');
+  var zoomVal = document.getElementById('zoom-val');
+  zoomSlider.addEventListener('input', function(){
+    zoomVal.textContent = this.value + '%';
+    var z = parseInt(this.value) / 100;
+    grid.style.transform = 'scale('+z+')';
+    grid.style.transformOrigin = 'top center';
+  });
+
+  borderBtn.addEventListener('click', function(){
+    currentBucket = currentBucket === 'plain' ? 'border' : 'plain';
+    borderBtn.textContent = currentBucket === 'border' ? 'On' : 'Off';
+    borderBtn.classList.toggle('active', currentBucket === 'border');
+    loadPhotos();
+  });
 
   /* lightbox */
   var lb = document.getElementById('lightbox');
@@ -498,19 +485,13 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     var fullSrc = src.replace('?width=600&quality=65','');
     var ox = originX ? (originX / window.innerWidth * 100)+'%' : '50%';
     var oy = originY ? (originY / window.innerHeight * 100)+'%' : '50%';
-
-    /* remove old img completely */
     var old = lb.querySelector('img');
     if(old) lb.removeChild(old);
-
-    /* create fresh img */
     var img = document.createElement('img');
     img.id = 'lb-img';
-    img.style.transformOrigin = ox + ' ' + oy;
+    img.style.transformOrigin = ox+' '+oy;
     img.alt = '';
     lb.appendChild(img);
-
-    /* open overlay, then set src so there's nothing stale shown */
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
     img.src = fullSrc;
