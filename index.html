@@ -286,7 +286,7 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
   </div>
   <div class="lp-row">
     <span class="lp-label">Zoom</span>
-    <input type="range" class="lp-slider" id="zoom-slider" min="50" max="150" value="100" step="10">
+    <input type="range" class="lp-slider" id="zoom-slider" min="50" max="150" value="100" step="5">
     <span class="lp-val" id="zoom-val">100%</span>
   </div>
   <div class="lp-row">
@@ -417,9 +417,10 @@ footer span{font-family:var(--mono);font-size:.64rem;font-weight:300;color:var(-
     .then(function(files){
       var names = (Array.isArray(files) ? files : [])
         .filter(function(f){
-          return f.name && f.id && f.metadata
-            && /\.(jpg|jpeg|png|webp)$/i.test(f.name)
-            && f.name.indexOf('placeholder') === -1;
+          return f.name
+            && f.name.indexOf('placeholder') === -1
+            && f.name.indexOf('.emptyFolderPlaceholder') === -1
+            && /\.(jpg|jpeg|png|webp)$/i.test(f.name);
         })
         .map(function(f){ return f.name; });
       buildGrid(names);
